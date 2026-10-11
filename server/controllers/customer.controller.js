@@ -46,7 +46,13 @@ export const loginCustomer = async (req, res) => {
             return res.status(401).send("Invalid credentials");
         }
         const token = genToken(user._id);
-        res.cookie("token", token, { httpOnly: true })
+        const isProduction = process.env.NODE_ENV === "production" || Boolean(process.env.CLIENT_URL && !process.env.CLIENT_URL.includes("localhost"));
+        res.cookie("token", token, {
+            httpOnly: true,
+            secure: isProduction,
+            sameSite: isProduction ? "none" : "lax",
+            maxAge: 7 * 24 * 60 * 60 * 1000
+        });
         res.status(200).json({
             "success": true,
             "message": "Login successful"
@@ -68,7 +74,12 @@ export const mepage = async (req, res) => {
 }
 
 export const logoutUser = async (req, res) => {
-    res.clearCookie("token");
+    const isProduction = process.env.NODE_ENV === "production" || Boolean(process.env.CLIENT_URL && !process.env.CLIENT_URL.includes("localhost"));
+    res.clearCookie("token", {
+        httpOnly: true,
+        secure: isProduction,
+        sameSite: isProduction ? "none" : "lax"
+    });
     return res.status(200).json({
         success: true,
         message: "Logged out successfully"
