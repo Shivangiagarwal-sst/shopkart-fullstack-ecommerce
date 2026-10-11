@@ -1,5 +1,6 @@
-#ShopKart
+
+# ShopKart
 
 ## 🌐 Website Preview
 
-[![Website Preview](./ShopKart.png)](shopkart-fullstack-ecommerce.vercel.app)
+[![Website Preview](./ShopKart.png)](https://shopkart-fullstack-ecommerce.vercel.app/)
